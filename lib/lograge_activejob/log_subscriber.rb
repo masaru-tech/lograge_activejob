@@ -27,7 +27,8 @@ module LogrageActivejob
           queue_name: job.queue_name,
           args: job.arguments,
           duration: event.duration.round(2), # ms
-          message: ex&.message,
+          message: ex&.message, # deprecated in v0.3.0
+          error: ex&.message,
           backtrace: ex&.backtrace,
         }.compact
       end
