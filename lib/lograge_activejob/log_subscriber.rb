@@ -25,7 +25,7 @@ module LogrageActivejob
           job_id: job.job_id,
           adapter_class: event.payload[:adapter].class.name.demodulize,
           queue_name: job.queue_name,
-          args: job.arguments,
+          args: job.arguments.any? ? ActiveJob::Arguments.serialize(job.arguments) : [],
           duration: event.duration.round(2), # ms
           message: ex&.message, # deprecated in v0.3.0
           error: ex&.message,

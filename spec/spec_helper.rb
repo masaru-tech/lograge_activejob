@@ -1,5 +1,8 @@
 require 'bundler/setup'
+require 'global_id'
 require 'lograge_activejob'
+
+GlobalID.app = "LogrageActivejobExampleApp"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
