@@ -5,6 +5,13 @@ require 'lograge'
 
 RSpec.describe LogrageActivejob::LogSubscriber do
   class TestJob < ActiveJob::Base; end
+  class TestModel
+    include GlobalID::Identification
+
+    def id
+      'ID1234'
+    end
+  end
 
   let(:log_output) { StringIO.new }
   let(:logger) do
@@ -20,9 +27,11 @@ RSpec.describe LogrageActivejob::LogSubscriber do
         Time.now + 1.second,
         1,
         adapter: ActiveJob::QueueAdapters::AsyncAdapter.new,
-        job: TestJob.new
+        job: job
     )
   end
+
+  let(:job) { TestJob.new }
 
   before do
     Lograge.logger = logger
@@ -65,7 +74,19 @@ RSpec.describe LogrageActivejob::LogSubscriber do
 
     it 'includes the args' do
       subscriber.perform(event)
-      expect(log_output.string).to match(/args=\[.*\] /)
+      expect(log_output.string).to match(/args=\[\] /)
+    end
+
+    describe 'output args' do
+      let(:job) { TestJob.new('test', TestModel.new) }
+      let(:expect_args) {
+        "\\[\"test\", {\"_aj_globalid\"=>\"gid://LogrageActivejobExampleApp/TestModel/ID1234\"}\\]"
+      }
+
+      it {
+        subscriber.perform(event)
+        expect(log_output.string).to match(/args=#{expect_args} /)
+      }
     end
   end
 
