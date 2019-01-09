@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/masaru-tech/lograge_activejob.svg?branch=master)](https://travis-ci.com/masaru-tech/lograge_activejob)
+
 # LogrageActivejob
 
 Add ActiveJobs log for Lograge
