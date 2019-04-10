@@ -102,4 +102,21 @@ RSpec.describe LogrageActivejob::LogSubscriber do
       expect(log_output.string).to include('data=value')
     end
   end
+
+  context 'when perform an action with lograge_activejob output' do
+    let(:activejob_output) { StringIO.new }
+    let(:activejob_logger) do
+      Logger.new(activejob_output).tap { |logger| logger.formatter = ->(_, _, _, msg) { msg } }
+    end
+
+    before do
+      LogrageActivejob.logger = activejob_logger
+    end
+
+    it 'includes the job_class only in lograge_activejob output' do
+      subscriber.perform(event)
+      expect(log_output.string).not_to include('job_class=TestJob ')
+      expect(activejob_output.string).to include('job_class=TestJob ')
+    end
+  end
 end
