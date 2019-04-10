@@ -11,7 +11,7 @@ module LogrageActivejob
 
     private
       def logger
-        Lograge.logger.presence || super
+        LogrageActivejob.logger.presence || Lograge.logger.presence || super
       end
 
       def initial_data(event)
