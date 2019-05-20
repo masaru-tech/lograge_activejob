@@ -7,6 +7,8 @@ module LogrageActivejob
   mattr_writer :custom_options
   self.custom_options = nil
 
+  mattr_accessor :logger
+
   def custom_options(event)
     if @@custom_options.respond_to?(:call)
       @@custom_options.call(event)
@@ -16,6 +18,7 @@ module LogrageActivejob
   end
 
   def setup(app)
+    LogrageActivejob.logger = app.config.lograge_activejob.logger
     LogrageActivejob.custom_options = app.config.lograge_activejob.custom_options
     LogrageActivejob::LogSubscriber.attach_to :active_job
   end
