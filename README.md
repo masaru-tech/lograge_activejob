@@ -23,8 +23,18 @@ Or install it yourself as:
 
     $ gem install lograge_activejob
 
-# Custom setup
+## Custom setup
+### Output file path
+You can configure output file path for lograge_activejob. (default is the path set in lograge)
 
+```ruby
+# config/initializers/lograge_activejob.rb
+Rails.application.configure do
+  config.lograge_activejob.logger = ActiveSupport::Logger.new "#{Rails.root}/log/lograge_activejob_#{Rails.env}.log"
+end
+```
+
+### Additional fields
 You can configure additional fields, which will be logged for every exception.
 
 ```ruby
